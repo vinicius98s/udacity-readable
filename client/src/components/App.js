@@ -8,6 +8,8 @@ import { handleGetCategories } from '../actions/categories';
 import Home from './Home';
 import Categories from './Categories';
 import Post from './Post';
+import Layout from './Layout';
+import Header from './Header';
 
 class App extends Component {
   componentDidMount() {
@@ -24,9 +26,12 @@ class App extends Component {
 
     return (
       <Router>
-        <Route exact path='/' component={Home} />
-        <Route exact path='/:category' component={Categories} />
-        <Route exact path='/:category/:id' component={Post} />
+        <Header />
+        <Layout>
+          <Route exact path='/' component={Home} />
+          <Route exact path='/:category' component={Categories} />
+          <Route exact path='/:category/:id' component={Post} />
+        </Layout>
       </Router>
     )
   }

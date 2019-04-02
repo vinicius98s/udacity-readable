@@ -5,7 +5,6 @@ import { handlePostsByCategory } from '../actions/categories';
 class Categories extends React.Component {
     componentDidMount() {
         this.props.dispatch(handlePostsByCategory(this.props.category))
-        console.log()
     }
 
     render() {
