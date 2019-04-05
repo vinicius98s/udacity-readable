@@ -1,15 +1,25 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import PostVote from './PostVote';
+import SortPosts from './SortPosts';
+import Button from './Button';
 
 const StyledList = styled.div`
     flex: 1;
 
+    .actions button {
+        float: right;
+    }
+
     ul {
         list-style: none;
+    }
+
+    ul h1 {
+        margin-top: 20px;
+        color: var(--lightGrey);
     }
 
     li {
@@ -45,8 +55,15 @@ const StyledList = styled.div`
 const PostsList = (props) => {
     return (
         <StyledList>
-            {props.children}
+            <div className='actions'>
+                <SortPosts />
+                <Button title='Add post' />
+            </div>
             <ul>
+                {props.posts.length === 0 && (
+                    <h1>Sorry, couldn't find any post.</h1>
+                )}
+
                 {props.posts.map(post => (
                     <li key={post.id}>
                         <PostVote id={post.id} voteScore={post.voteScore} />
@@ -62,12 +79,4 @@ const PostsList = (props) => {
     )
 }
 
-function mapStatetoProps({ posts }, props) {
-    return {
-        posts: props.sort === 'score'
-            ? posts.sort((a, b) => b.voteScore - a.voteScore)
-            : posts.sort((a, b) => b.timestamp - a.timestamp),
-    }
-}
-
-export default connect(mapStatetoProps)(PostsList)
+export default PostsList

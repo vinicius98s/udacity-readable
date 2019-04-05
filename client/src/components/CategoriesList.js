@@ -28,7 +28,8 @@ const CategoriesList = (props) => {
                             <Button
                                 title={category.name}
                                 background={category.name === 'react' ? '#222222' : category.name === 'redux' ? '#764abc' : null}
-                                color={category.name === 'react' ? '#00d8ff' : category.name === 'redux' ? 'white' : null} />
+                                color={category.name === 'react' ? '#00d8ff' : category.name === 'redux' ? 'white' : null}
+                                path={category.path} />
                         </Link>
                     </li>
                 ))}

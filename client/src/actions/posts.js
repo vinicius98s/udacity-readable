@@ -10,6 +10,7 @@ export const VOTE_ON_POST = 'VOTE_ON_POST';
 export const EDIT_POST = 'EDIT_POST';
 export const GET_COMMENTS = 'GET_COMMENTS';
 export const DELETE_POST = 'DELETE_POST';
+export const SORT_POSTS = 'SORT_POSTS';
 
 export function getAllPosts (posts) {
     return {
@@ -52,10 +53,25 @@ export function getSinglePost(id) {
     }
 }
 
-export function voteOnPost(option) {
+export function voteOnPost(post) {
     return {
         type: VOTE_ON_POST,
-        option,
+        post,
+    }
+}
+
+export function handleVote(id, option) {
+    return (dispatch) => {
+        fetch(`${BASE_URL}/${id}`, {
+            headers: {
+                'Authorization': 'udacity',
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify({ option })
+        })
+            .then(res => res.json())
+            .then(post => dispatch(voteOnPost(post)))
     }
 }
 
@@ -77,5 +93,12 @@ export function deletePost(id) {
     return {
         type: DELETE_POST,
         id,
+    }
+}
+
+export function sortPosts(sortType) {
+    return {
+        type: SORT_POSTS,
+        sortType,
     }
 }

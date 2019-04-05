@@ -7,7 +7,7 @@ import { handleGetCategories } from '../actions/categories';
 
 import Home from './Home';
 import Categories from './Categories';
-import Post from './Post';
+import PostPage from './PostPage';
 import Layout from './Layout';
 import Header from './Header';
 
@@ -30,7 +30,7 @@ class App extends Component {
         <Layout>
           <Route exact path='/' component={Home} />
           <Route exact path='/:category' component={Categories} />
-          <Route exact path='/:category/:id' component={Post} />
+          <Route exact path='/:category/:id' component={PostPage} />
         </Layout>
       </Router>
     )

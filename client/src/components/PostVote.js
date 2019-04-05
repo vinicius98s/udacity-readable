@@ -1,8 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 
 import { FiChevronUp } from "react-icons/fi";
 import { FiChevronDown } from "react-icons/fi";
+
+import { handleVote } from '../actions/posts';
 
 const StyledVote = styled.div`
     display: flex;
@@ -10,6 +13,12 @@ const StyledVote = styled.div`
     justify-content: space-around;
     align-items: center;
     margin-right: 20px;
+
+    button {
+        border: none;
+        background: transparent;
+        outline: none;
+    }
 
     span {
         color: ${props => props.voteScore === 0 ? 'var(--lightGrey)'
@@ -45,11 +54,15 @@ const StyledVote = styled.div`
 const PostVote = (props) => {
     return (
         <StyledVote voteScore={props.voteScore}>
-            <FiChevronUp className='up-vote' />
+            <button onClick={() => props.dispatch(handleVote(props.id, 'upVote'))}>
+                <FiChevronUp className='up-vote' />
+            </button>
             <span>{props.voteScore}</span>
-            <FiChevronDown className='down-vote' />
+            <button onClick={() => props.dispatch(handleVote(props.id, 'downVote'))}>
+                <FiChevronDown className='down-vote' />
+            </button>
         </StyledVote>
     )
 }
 
-export default PostVote;
+export default connect()(PostVote)
