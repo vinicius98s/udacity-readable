@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const StyledHeader = styled.div`
-    width: 100vw;
+    width: 100%;
     height: 60px;
     display: flex;
     align-items: center;

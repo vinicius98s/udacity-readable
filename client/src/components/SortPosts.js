@@ -4,27 +4,45 @@ import styled from 'styled-components';
 
 import { sortPosts } from '../actions/posts';
 
-const StyledSort = styled.select`
-    margin-left: 10px;
-    padding: 5px;
-    outline: none;
-    border: 1px solid var(--primaryColor);
+const StyledSort = styled.div`
+    display: flex;
+    align-items: center;
+
+    span {
+        color: var(--lightGrey);
+        font-size: 13px;
+    }
+
+    button {
+        background: transparent;
+        margin: 0 5px;
+        font-size: 16px;
+        border: none;
+        outline: none;
+
+        &:hover {
+            color: var(--primaryColor);
+            cursor: pointer;
+        }
+    }
 `
 
 const SortPosts = (props) => {
-    const sortPostsWithInput = (e) => {
-        props.dispatch(sortPosts(e.target.value))
-    }
-
     return(
         <Fragment>
-            Sort by:
-            <StyledSort onClick={sortPostsWithInput}>
-                <option value="score">Score</option>
-                <option value="date">Date</option>
+            <StyledSort>
+                <span>Sort by:</span>
+                <button onClick={() => props.sortPost('score')}>score</button>
+                <button onClick={() => props.sortPost('date')}>date</button>
             </StyledSort>
         </Fragment>
     )
 }
 
-export default connect()(SortPosts)
+function mapDispatchToProps(dispatch) {
+    return {
+        sortPost: (type) => dispatch(sortPosts(type))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(SortPosts)

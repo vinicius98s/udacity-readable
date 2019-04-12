@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import PostVote from './PostVote';
+import Vote from './Vote';
 import SortPosts from './SortPosts';
 import Button from './Button';
+import CategoriesList from './CategoriesList';
 
 const StyledList = styled.div`
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 
-    .actions button {
-        float: right;
+    .actions .add-post {
+        position: absolute;
+        right: 0;
+        top: 0;
     }
 
     ul {
@@ -54,29 +61,44 @@ const StyledList = styled.div`
 
 const PostsList = (props) => {
     return (
-        <StyledList>
-            <div className='actions'>
-                <SortPosts />
-                <Button title='Add post' />
-            </div>
-            <ul>
-                {props.posts.length === 0 && (
-                    <h1>Sorry, couldn't find any post.</h1>
-                )}
+        <Fragment>
+            <CategoriesList />
+            <StyledList>
+                <div className='actions'>
+                    <SortPosts />
+                    <Link className='add-post' to='/add-post'>
+                        <Button title='Add post' />
+                    </Link>
+                </div>
+                <ul>
+                    {props.posts.length === 0 && (
+                        <h1>Sorry, couldn't find any post.</h1>
+                    )}
 
-                {props.posts.map(post => (
-                    <li key={post.id}>
-                        <PostVote id={post.id} voteScore={post.voteScore} />
-                        <Link to={`${post.category}/${post.id}`}>
-                            <h1>{post.title}</h1>
-                            <h4>Posted by: {post.author}</h4>
-                            <p>{post.commentCount} comments</p>
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-        </StyledList>
+                    {props.posts.map(post => (
+                        <li key={post.id}>
+                            <Vote id={post.id} voteScore={post.voteScore} type='post' />
+                            <Link to={`${post.category}/${post.id}`}>
+                                <h1>{post.title}</h1>
+                                <h4>Posted by: {post.author}</h4>
+                                <p>{post.commentCount} comments</p>
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+            </StyledList>
+        </Fragment>
     )
 }
 
-export default PostsList
+function mapStateToProps({ posts }, { match }) {
+    const category = match.params.category;
+
+    return {
+        posts: !category
+            ? posts
+            : posts.filter(post => post.category === category ? post : false)
+    }
+}
+
+export default connect(mapStateToProps)(PostsList)

@@ -28,8 +28,7 @@ const CategoriesList = (props) => {
                             <Button
                                 title={category.name}
                                 background={category.name === 'react' ? '#222222' : category.name === 'redux' ? '#764abc' : null}
-                                color={category.name === 'react' ? '#00d8ff' : category.name === 'redux' ? 'white' : null}
-                                path={category.path} />
+                                color={category.name === 'react' ? '#00d8ff' : category.name === 'redux' ? 'white' : null} />
                         </Link>
                     </li>
                 ))}
@@ -38,10 +37,10 @@ const CategoriesList = (props) => {
     )
 }
 
-function mapStatetoProps({ categories }) {
+function mapStateToProps({ categories }) {
     return {
-        categories: categories.allCategories,
+        categories
     }
 }
 
-export default connect(mapStatetoProps)(CategoriesList)
+export default connect(mapStateToProps)(CategoriesList)

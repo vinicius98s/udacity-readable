@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import { FiChevronUp } from "react-icons/fi";
 import { FiChevronDown } from "react-icons/fi";
 
-import { handleVote } from '../actions/posts';
+import { handleVoteOnPost } from '../actions/posts';
+import { handleVoteOnComment } from '../actions/comments';
 
 const StyledVote = styled.div`
     display: flex;
@@ -51,18 +52,31 @@ const StyledVote = styled.div`
     }
 `
 
-const PostVote = (props) => {
+const Vote = (props) => {
     return (
         <StyledVote voteScore={props.voteScore}>
-            <button onClick={() => props.dispatch(handleVote(props.id, 'upVote'))}>
+            <button onClick={props.type === 'post'
+                ? () => props.voteOnPost(props.id, 'upVote')
+                : () => props.voteOnComment(props.id, 'upVote')}>
                 <FiChevronUp className='up-vote' />
             </button>
+
             <span>{props.voteScore}</span>
-            <button onClick={() => props.dispatch(handleVote(props.id, 'downVote'))}>
+
+            <button onClick={props.type === 'post'
+                ? () => props.voteOnPost(props.id, 'downVote')
+                : () => props.voteOnComment(props.id, 'downVote')}>
                 <FiChevronDown className='down-vote' />
             </button>
         </StyledVote>
     )
 }
 
-export default connect()(PostVote)
+function mapDispatchToProps(dispatch) {
+    return {
+        voteOnPost: (id, option) => dispatch(handleVoteOnPost(id, option)),
+        voteOnComment: (id, option) => dispatch(handleVoteOnComment(id, option)),
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Vote)
