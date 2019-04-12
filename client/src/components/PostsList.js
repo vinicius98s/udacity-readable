@@ -1,12 +1,13 @@
-import React, { Fragment } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { Fragment } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
-import Vote from './Vote';
-import SortPosts from './SortPosts';
-import Button from './Button';
-import CategoriesList from './CategoriesList';
+import Vote from "./Vote";
+import SortPosts from "./SortPosts";
+import Button from "./Button";
+import CategoriesList from "./CategoriesList";
+import DeletePost from "./DeletePost";
 
 const StyledList = styled.div`
     flex: 1;
@@ -22,83 +23,90 @@ const StyledList = styled.div`
 
     ul {
         list-style: none;
-    }
 
-    ul h1 {
-        margin-top: 20px;
-        color: var(--lightGrey);
+        > h1 {
+            margin-top: 20px;
+            color: var(--lightGrey);
+        }
     }
 
     li {
-        box-shadow: 0 5px 30px rgba(0,0,0, 0.15);
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
         background: white;
         border-radius: 12px;
         padding: 30px;
         margin: 20px 0;
         display: flex;
         flex-direction: row;
-    }
+        position: relative;
 
-    li a h1 {
-        font-size: 28px;
-        color: var(--primaryColor);
-    }
+        a {
+            text-decoration: none;
+            color: black;
 
-    li a h4 {
-        color: var(--lightGrey);
-        margin: 5px 0 15px 0;
-    }
+            h1 {
+                font-size: 28px;
+                color: var(--primaryColor);
+            }
 
-    li a p {
-        color: var(--lightGrey);
-    }
+            h4 {
+                color: var(--lightGrey);
+                margin: 5px 0 15px 0;
+            }
 
-    li a {
-        text-decoration: none;
-        color: black;
-    }
-`
+            p {
+                color: var(--lightGrey);
+            }
 
-const PostsList = (props) => {
+            &.edit {
+                position: absolute;
+                right: 20px;
+                bottom: 20px;
+            }
+        }
+    }
+`;
+
+const PostsList = props => {
     return (
         <Fragment>
             <CategoriesList />
             <StyledList>
-                <div className='actions'>
+                <div className="actions">
                     <SortPosts />
-                    <Link className='add-post' to='/add-post'>
-                        <Button title='Add post' />
+                    <Link className="add-post" to="/post">
+                        <Button title="Add a post" />
                     </Link>
                 </div>
                 <ul>
-                    {props.posts.length === 0 && (
-                        <h1>Sorry, couldn't find any post.</h1>
-                    )}
+                    {props.posts.length === 0 && <h1>Sorry, couldn't find any post.</h1>}
 
                     {props.posts.map(post => (
                         <li key={post.id}>
-                            <Vote id={post.id} voteScore={post.voteScore} type='post' />
+                            <Vote id={post.id} voteScore={post.voteScore} type="post" />
                             <Link to={`${post.category}/${post.id}`}>
                                 <h1>{post.title}</h1>
                                 <h4>Posted by: {post.author}</h4>
                                 <p>{post.commentCount} comments</p>
+                            </Link>
+                            <DeletePost home id={post.id} />
+                            <Link className="edit" to={`/post/${post.id}`}>
+                                <Button title="Edit" />
                             </Link>
                         </li>
                     ))}
                 </ul>
             </StyledList>
         </Fragment>
-    )
-}
+    );
+};
 
 function mapStateToProps({ posts }, { match }) {
     const category = match.params.category;
 
     return {
-        posts: !category
-            ? posts
-            : posts.filter(post => post.category === category ? post : false)
-    }
+        posts: !category ? posts : posts.filter(post => (post.category === category ? post : false))
+    };
 }
 
-export default connect(mapStateToProps)(PostsList)
+export default connect(mapStateToProps)(PostsList);

@@ -97,6 +97,21 @@ export function editPost(post) {
     };
 }
 
+export function handleEditPost(id, post) {
+    return dispatch => {
+        fetch(`${BASE_URL}/${id}`, {
+            headers: {
+                Authorization: "udacity",
+                "Content-Type": "application/json"
+            },
+            method: "PUT",
+            body: JSON.stringify({ ...post })
+        })
+            .then(res => res.json())
+            .then(post => dispatch(editPost(post)));
+    };
+}
+
 export function getComments(id) {
     return {
         type: GET_COMMENTS,
@@ -104,10 +119,23 @@ export function getComments(id) {
     };
 }
 
-export function deletePost(id) {
+export function deletePost(post) {
     return {
         type: DELETE_POST,
-        id
+        post
+    };
+}
+
+export function handleDeletePost(id) {
+    return dispatch => {
+        fetch(`${BASE_URL}/${id}`, {
+            headers: {
+                Authorization: "udacity"
+            },
+            method: "DELETE"
+        })
+            .then(res => res.json())
+            .then(post => dispatch(deletePost(post)));
     };
 }
 

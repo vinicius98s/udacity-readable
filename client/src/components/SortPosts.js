@@ -1,12 +1,13 @@
-import React, { Fragment } from 'react';
-import { connect } from 'react-redux';
-import styled from 'styled-components';
+import React, { Fragment } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
 
-import { sortPosts } from '../actions/posts';
+import { sortPosts } from "../actions/posts";
 
 const StyledSort = styled.div`
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
 
     span {
         color: var(--lightGrey);
@@ -25,24 +26,27 @@ const StyledSort = styled.div`
             cursor: pointer;
         }
     }
-`
+`;
 
-const SortPosts = (props) => {
-    return(
+const SortPosts = props => {
+    return (
         <Fragment>
             <StyledSort>
                 <span>Sort by:</span>
-                <button onClick={() => props.sortPost('score')}>score</button>
-                <button onClick={() => props.sortPost('date')}>date</button>
+                <button onClick={() => props.sortPost("score")}>score</button>
+                <button onClick={() => props.sortPost("date")}>date</button>
             </StyledSort>
         </Fragment>
-    )
-}
+    );
+};
 
 function mapDispatchToProps(dispatch) {
     return {
-        sortPost: (type) => dispatch(sortPosts(type))
-    }
+        sortPost: type => dispatch(sortPosts(type))
+    };
 }
 
-export default connect(null, mapDispatchToProps)(SortPosts)
+export default connect(
+    null,
+    mapDispatchToProps
+)(SortPosts);

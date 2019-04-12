@@ -21,7 +21,7 @@ export function handleAddComment(comment) {
                 "Content-Type": "application/json"
             },
             method: "POST",
-            body: JSON.stringify({ comment })
+            body: JSON.stringify({ ...comment })
         })
             .then(res => res.json())
             .then(comment => dispatch(addComment(comment)));

@@ -3,10 +3,13 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 
 import Vote from "./Vote";
+import AddComment from "./AddComment";
 
 import { handleGetCommentsByPost } from "../actions/comments";
 
 const StyledPostContent = styled.div`
+    width: 800px;
+
     h1 {
         color: var(--primaryColor);
     }
@@ -52,8 +55,7 @@ class Post extends React.Component {
                     <p>Author: {post.author}</p>
                     <p>Posted on: {new Date(post.timestamp).toLocaleDateString("en-US")}</p>
                     <p className="body">{post.body}</p>
-                    <h3>Add a new comment:</h3>
-                    {/* INPUT AQUI */}
+                    <AddComment id={post.id} />
                     <h3>Comments:</h3>
                     {comments.map(comment => (
                         <StyledComments key={comment.id}>
