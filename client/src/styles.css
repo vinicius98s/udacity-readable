@@ -1,12 +1,13 @@
-@import url('https://fonts.googleapis.com/css?family=Quicksand');
+@import url("https://fonts.googleapis.com/css?family=Quicksand");
 
 :root {
-  --primaryColor: #02B3E4;
-  --lightGrey: #9C9C9C;
+    --primaryColor: #02b3e4;
+    --lightGrey: #9c9c9c;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  font-family: 'Quicksand', sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: "Quicksand", sans-serif;
+    box-sizing: border-box;
 }

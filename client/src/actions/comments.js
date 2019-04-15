@@ -14,7 +14,7 @@ export function addComment(comment) {
 }
 
 export function handleAddComment(comment) {
-    return dispatch => {
+    return (dispatch) => {
         fetch(`${BASE_URL}`, {
             headers: {
                 Authorization: "udacity",
@@ -23,8 +23,8 @@ export function handleAddComment(comment) {
             method: "POST",
             body: JSON.stringify({ ...comment })
         })
-            .then(res => res.json())
-            .then(comment => dispatch(addComment(comment)));
+            .then((res) => res.json())
+            .then((comment) => dispatch(addComment(comment)));
     };
 }
 
@@ -36,12 +36,12 @@ export function getCommentsByPost(comments) {
 }
 
 export function handleGetCommentsByPost(id) {
-    return dispatch => {
+    return (dispatch) => {
         fetch(`http://localhost:3001/posts/${id}/comments`, {
             headers: { Authorization: "udacity" }
         })
-            .then(res => res.json())
-            .then(comments => dispatch(getCommentsByPost(comments)));
+            .then((res) => res.json())
+            .then((comments) => dispatch(getCommentsByPost(comments)));
     };
 }
 
@@ -53,7 +53,7 @@ export function voteOnComment(comment) {
 }
 
 export function handleVoteOnComment(id, option) {
-    return dispatch => {
+    return (dispatch) => {
         fetch(`${BASE_URL}/${id}`, {
             headers: {
                 Authorization: "udacity",
@@ -62,8 +62,8 @@ export function handleVoteOnComment(id, option) {
             method: "POST",
             body: JSON.stringify({ option })
         })
-            .then(res => res.json())
-            .then(comment => dispatch(voteOnComment(comment)));
+            .then((res) => res.json())
+            .then((comment) => dispatch(voteOnComment(comment)));
     };
 }
 
@@ -74,9 +74,37 @@ export function editComment(comment) {
     };
 }
 
-export function deleteComment(id) {
+export function handleEditComment(id, comment) {
+    return (dispatch) => {
+        fetch(`${BASE_URL}/${id}`, {
+            headers: {
+                Authorization: "udacity",
+                "Content-Type": "application/json"
+            },
+            method: "PUT",
+            body: JSON.stringify({ ...comment })
+        })
+            .then((res) => res.json())
+            .then((comment) => dispatch(editComment(comment)));
+    };
+}
+
+export function deleteComment(comment) {
     return {
         type: DELETE_COMMENT,
-        id
+        comment
+    };
+}
+
+export function handleDeleteComment(id) {
+    return (dispatch) => {
+        fetch(`${BASE_URL}/${id}`, {
+            headers: {
+                Authorization: "udacity"
+            },
+            method: "DELETE"
+        })
+            .then((res) => res.json())
+            .then((comment) => dispatch(deleteComment(comment)));
     };
 }

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import Button from "./Button";
 
-import { handleAddComment } from "../actions/comments";
+import { handleAddComment, handleEditComment } from "../actions/comments";
 
 const StyledAddComment = styled.form`
     display: flex;
@@ -26,13 +26,13 @@ const StyledAddComment = styled.form`
     }
 `;
 
-const AddComment = props => {
-    const handleAddComment = e => {
+const AddComment = (props) => {
+    const handleComment = (e) => {
         e.preventDefault();
         const author = e.target.author.value;
         const comment = e.target.comment.value;
 
-        props.sendComment({
+        props.addComment({
             id: Math.random()
                 .toString(36)
                 .substr(2, 9),
@@ -46,7 +46,7 @@ const AddComment = props => {
     };
 
     return (
-        <StyledAddComment onSubmit={handleAddComment}>
+        <StyledAddComment onSubmit={handleComment}>
             <h3>Add a new comment:</h3>
             <label htmlFor="author">Author:</label>
             <input type="text" name="author" id="author" />
@@ -59,7 +59,8 @@ const AddComment = props => {
 
 function mapDispatchToProps(dispatch) {
     return {
-        sendComment: comment => dispatch(handleAddComment(comment))
+        addComment: (comment) => dispatch(handleAddComment(comment)),
+        editComment: (comment) => dispatch(handleEditComment(comment))
     };
 }
 

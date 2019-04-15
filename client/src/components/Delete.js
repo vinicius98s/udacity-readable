@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { FiTrash2 } from "react-icons/fi";
 
 import { handleDeletePost } from "../actions/posts";
+import { handleDeleteComment } from "../actions/comments";
 
 const StyledButton = styled.button`
     border: none;
@@ -20,12 +21,18 @@ const StyledButton = styled.button`
     font-size: 15px;
     cursor: pointer;
     transition: 0.3s ease;
-    ${props =>
-        props.home &&
+    ${(props) =>
+        props.post &&
         `
         position: absolute;
         right: 20px;
         top: 20px;
+    `}
+    ${(props) =>
+        props.comment &&
+        `
+        margin-left: auto;
+        margin-right: 10px;
     `}
 
     &:hover {
@@ -34,9 +41,17 @@ const StyledButton = styled.button`
     }
 `;
 
-const DeletePost = props => {
+const DeletePost = (props) => {
+    const handleDelete = (id) => {
+        if (props.post) {
+            props.deletePost(id);
+        } else {
+            props.deleteComment(id);
+        }
+    };
+
     return (
-        <StyledButton home={props.home} onClick={() => props.deletePost(props.id)}>
+        <StyledButton post={props.post} comment={props.comment} onClick={() => handleDelete(props.id)}>
             <FiTrash2 />
         </StyledButton>
     );
@@ -44,7 +59,8 @@ const DeletePost = props => {
 
 function mapDispatchToProps(dispatch) {
     return {
-        deletePost: id => dispatch(handleDeletePost(id))
+        deletePost: (id) => dispatch(handleDeletePost(id)),
+        deleteComment: (id) => dispatch(handleDeleteComment(id))
     };
 }
 
