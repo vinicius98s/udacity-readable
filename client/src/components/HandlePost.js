@@ -18,10 +18,6 @@ const StyledHandlePost = styled.form`
         margin-right: auto;
     }
 
-    select {
-        width: 102% !important;
-    }
-
     input,
     textarea,
     select {
@@ -30,7 +26,7 @@ const StyledHandlePost = styled.form`
         border-radius: 8px;
         outline: none;
         border: 1px solid var(--primaryColor);
-        margin: 5px 0 20px 13px;
+        margin: 5px 0 20px;
         resize: none;
         font-size: 14px;
 
@@ -75,7 +71,7 @@ class HandlePost extends React.Component {
 
         return (
             <Fragment>
-                <StyledHandlePost onSubmit={(e) => this.handlePostData(e, post)}>
+                <StyledHandlePost onSubmit={e => this.handlePostData(e, post)}>
                     <label htmlFor="title">Title:</label>
                     <input name="title" placeholder="This is an important step" defaultValue={!post ? "" : post.title} />
                     <label htmlFor="author">Author:</label>
@@ -89,7 +85,7 @@ class HandlePost extends React.Component {
                     <label htmlFor="categories">Category:</label>
                     <select name="categories" disabled={!post ? false : true}>
                         {!post &&
-                            this.props.categories.map((category) => (
+                            this.props.categories.map(category => (
                                 <option name={category.name} key={category.path}>
                                     {category.name}
                                 </option>
@@ -108,7 +104,7 @@ class HandlePost extends React.Component {
 
 function mapStateToProps({ categories, posts }, { match }) {
     const { id } = match.params;
-    const post = posts.filter((post) => (post.id === id ? post : false));
+    const post = posts.filter(post => (post.id === id ? post : false));
 
     return {
         categories,
@@ -121,7 +117,7 @@ function mapStateToProps({ categories, posts }, { match }) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        sendPost: (post) => dispatch(handleNewPost(post)),
+        sendPost: post => dispatch(handleNewPost(post)),
         updatePost: (id, post) => dispatch(handleEditPost(id, post))
     };
 }
