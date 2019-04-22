@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { FiTrash2 } from "react-icons/fi";
+import { withRouter } from "react-router-dom";
 
 import { handleDeletePost } from "../actions/posts";
 import { handleDeleteComment } from "../actions/comments";
@@ -21,14 +22,14 @@ const StyledButton = styled.button`
     font-size: 15px;
     cursor: pointer;
     transition: 0.3s ease;
-    ${(props) =>
-        props.post &&
+    ${props =>
+        props.postList &&
         `
         position: absolute;
         right: 20px;
         top: 20px;
     `}
-    ${(props) =>
+    ${props =>
         props.comment &&
         `
         margin-left: auto;
@@ -41,30 +42,38 @@ const StyledButton = styled.button`
     }
 `;
 
-const DeletePost = (props) => {
-    const handleDelete = (id) => {
+const DeletePost = props => {
+    const handleDelete = id => {
+        if (props.postList) {
+            props.deletePost(id);
+        }
+
         if (props.post) {
             props.deletePost(id);
-        } else {
+        }
+
+        if (props.comment) {
             props.deleteComment(id);
         }
+
+        props.history.push("/");
     };
 
     return (
-        <StyledButton post={props.post} comment={props.comment} onClick={() => handleDelete(props.id)}>
+        <StyledButton post={props.post} comment={props.comment} postList={props.postList} onClick={() => handleDelete(props.id)}>
             <FiTrash2 />
         </StyledButton>
     );
 };
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, props) {
     return {
-        deletePost: (id) => dispatch(handleDeletePost(id)),
-        deleteComment: (id) => dispatch(handleDeleteComment(id))
+        deletePost: id => dispatch(handleDeletePost(id)),
+        deleteComment: id => dispatch(handleDeleteComment(id))
     };
 }
 
 export default connect(
     null,
     mapDispatchToProps
-)(DeletePost);
+)(withRouter(DeletePost));

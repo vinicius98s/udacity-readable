@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import Vote from "./Vote";
 import AddComment from "./AddComment";
@@ -11,6 +12,7 @@ import { handleGetCommentsByPost, handleEditComment } from "../actions/comments"
 
 const StyledPostContent = styled.div`
     width: 800px;
+    position: relative;
 
     h1 {
         color: var(--primaryColor);
@@ -59,6 +61,16 @@ const StyledPostContent = styled.div`
             margin: 5px 0;
         }
     }
+
+    .handle-post {
+        display: flex;
+        position: absolute;
+        right: 0;
+
+        button {
+            margin-right: 10px;
+        }
+    }
 `;
 
 const StyledComments = styled.div`
@@ -84,7 +96,7 @@ class Post extends React.Component {
         }
     };
 
-    handleCommentSubmit = (e) => {
+    handleCommentSubmit = e => {
         e.preventDefault();
         this.props.editComment(this.state.editComment.id, {
             timestamp: Date.now(),
@@ -102,14 +114,21 @@ class Post extends React.Component {
 
         return (
             <Fragment>
+                <Vote id={post.id} voteScore={post.voteScore} type="post" />
                 <StyledPostContent>
+                    <div className="handle-post">
+                        <Delete post id={post.id} />
+                        <Link className="edit" to={`/post/${post.id}`}>
+                            <Button title="Edit" />
+                        </Link>
+                    </div>
                     <h1>{post.title}</h1>
                     <p>Author: {post.author}</p>
                     <p>Posted on: {new Date(post.timestamp).toLocaleDateString("en-US")}</p>
                     <p className="body">{post.body}</p>
                     <AddComment id={post.id} />
-                    <h3>Comments:</h3>
-                    {comments.map((comment) => (
+                    <h3>{comments.length} Comments:</h3>
+                    {comments.map(comment => (
                         <StyledComments key={comment.id}>
                             <Vote id={comment.id} voteScore={comment.voteScore} type="comment" />
                             <div>
@@ -146,7 +165,7 @@ function mapDispatchToProps(dispatch, { match }) {
 
 function mapStateToProps({ posts, comments }, { match }) {
     const id = match.params.id;
-    const post = posts.filter((post) => post.id === id);
+    const post = posts.filter(post => post.id === id);
 
     return {
         post: post.length === 1 ? post[0] : null,

@@ -67,7 +67,7 @@ const StyledList = styled.div`
     }
 `;
 
-const PostsList = (props) => {
+const PostsList = props => {
     return (
         <Fragment>
             <CategoriesList />
@@ -81,7 +81,7 @@ const PostsList = (props) => {
                 <ul>
                     {props.posts.length === 0 && <h1>Sorry, couldn't find any post.</h1>}
 
-                    {props.posts.map((post) => (
+                    {props.posts.map(post => (
                         <li key={post.id}>
                             <Vote id={post.id} voteScore={post.voteScore} type="post" />
                             <Link to={`${post.category}/${post.id}`}>
@@ -89,7 +89,7 @@ const PostsList = (props) => {
                                 <h4>Posted by: {post.author}</h4>
                                 <p>{post.commentCount} comments</p>
                             </Link>
-                            <Delete post id={post.id} />
+                            <Delete post postList id={post.id} />
                             <Link className="edit" to={`/post/${post.id}`}>
                                 <Button title="Edit" />
                             </Link>
@@ -105,7 +105,7 @@ function mapStateToProps({ posts }, { match }) {
     const category = match.params.category;
 
     return {
-        posts: !category ? posts : posts.filter((post) => (post.category === category ? post : false))
+        posts: !category ? posts : posts.filter(post => (post.category === category ? post : false))
     };
 }
 
