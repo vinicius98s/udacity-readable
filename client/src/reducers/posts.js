@@ -12,11 +12,10 @@ export default function posts(state = [], action) {
 
             return [...newArrayOrder];
         case VOTE_ON_POST:
+        case EDIT_POST:
             return state.map(post => (post.id === action.post.id ? action.post : post));
         case ADD_NEW_POST:
             return [...state, action.post];
-        case EDIT_POST:
-            return state.map(post => (post.id === action.post.id ? action.post : post));
         case DELETE_POST:
             return state.filter(post => (post.id === action.post.id ? false : true));
         default:

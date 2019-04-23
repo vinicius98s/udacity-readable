@@ -165,10 +165,10 @@ function mapDispatchToProps(dispatch, { match }) {
 
 function mapStateToProps({ posts, comments }, { match }) {
     const id = match.params.id;
-    const post = posts.filter(post => post.id === id);
+    const post = posts.find(post => post.id === id);
 
     return {
-        post: post.length === 1 ? post[0] : null,
+        post,
         comments
     };
 }
